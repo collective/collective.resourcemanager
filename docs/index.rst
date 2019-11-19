@@ -1,0 +1,5 @@
+========================
+collective.resourcespace
+========================
+
+User documentation
