@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<object
+    name="portal_controlpanel"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="collective.resourcespace">
+
+    <configlet
+        title="ResourceSpace Keys"
+        action_id="ResourceSpaceKeys"
+        appId=""
+        category="Products"
+        condition_expr=""
+        url_expr="string:${portal_url}/@@resourcespace-keys"
+        icon_expr="string:${portal_url}/tag_icon.gif"
+        visible="True"
+        i18n:attributes="title">
+            <permission>Plone Site Setup: Editing</permission>
+    </configlet>
+
+</object>
