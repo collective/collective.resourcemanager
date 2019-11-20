@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<object
+    i18n:domain="plone"
+    meta_type="Dexterity FTI"
+    name="Folder"
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+
+  <action
+      action_id="rs-search"
+      category="object"
+      condition_expr=""
+      i18n:attributes="title"
+      title="DAM Search"
+      url_expr="string:${object_url}/rs-search"
+      visible="True">
+    <permission value="Modify portal content"/>
+  </action>
+
+</object>

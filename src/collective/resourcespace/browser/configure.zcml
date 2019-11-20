@@ -25,4 +25,11 @@
       class=".settings.ResourceSpaceKeysView"
       />
 
+  <browser:page
+      name="rs-search"
+      for="*"
+      permission="cmf.ModifyPortalContent"
+      class=".search.ResourceSpaceSearch"
+      />
+
 </configure>

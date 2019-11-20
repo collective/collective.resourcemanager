@@ -1,0 +1,38 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+      xmlns:tal="http://xml.zope.org/namespaces/tal"
+      xmlns:metal="http://xml.zope.org/namespaces/metal"
+      xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+      lang="en"
+      metal:use-macro="context/main_template/macros/master"
+      i18n:domain="plone">
+  <body>
+
+    <metal:main fill-slot="main">
+      <metal:main define-macro="main">
+
+	<h1 class="documentFirstHeading">Search ResourceSpace</h1>
+	<form action="" method="POST">
+	  <div class="field ">
+	    <div class="fieldErrorBox"></div>
+	    <span class="option"
+		  tal:define="checked python: getattr(context, 'inherit_css', 'checked')">
+	      <input id="rs-search" name="rs-search" type="text">
+	      <label for="rs-search">Search</label>
+	    </span>
+	  </div>
+	  <div class="formControls">
+	    <span tal:replace="structure context/@@authenticator/authenticator"/>
+	    <input class="standalone" value="Submit" type="submit"
+		   i18n:domain="plone" i18n:attributes="value"/>
+	  </div>
+	</form>
+    <div tal:define="images view/image_urls"
+         tal:repeat="image images">
+        <img src="${python:images[image]}" height="200" />
+    </div>
+
+      </metal:main>
+    </metal:main>
+
+  </body>
+</html>
