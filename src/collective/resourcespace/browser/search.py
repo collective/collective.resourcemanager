@@ -23,12 +23,13 @@ class ResourceSpaceSearch(BrowserView):
 
     def query_resourcespace(self, query):
         hash = hashlib.sha256()
-        hash.update(self.rs_private_key + query)
+        key_query = self.rs_private_key + query
+        hash.update(key_query.encode('utf-8'))
         request_url = self.rs_url + '?' + query + '&sign=' + hash.hexdigest()
         response = requests.get(request_url)
         # TODO: handle various errors from the response here
         return response.json()
-    
+
     def __call__(self):
         form = self.request.form
         if not form or 'rs-search' not in form:
@@ -41,7 +42,7 @@ class ResourceSpaceSearch(BrowserView):
         response = self.query_resourcespace(query)
         media_ids = [x['ref'] for x in response]
         # build new query to return image urls
-        query2 = 'user={0}&function=get_resource_path&param1=[{1}]&param2=false'.format(
+        query2 = 'user={0}&function=get_resource_path&param1=%5B{1}%5D&param2=false'.format(
             self.rs_user, ','.join(media_ids)
         )
         self.image_urls = self.query_resourcespace(query2)
