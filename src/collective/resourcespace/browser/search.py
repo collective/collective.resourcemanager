@@ -40,9 +40,10 @@ class ResourceSpaceSearch(BrowserView):
             self.rs_user, search_term
         )
         response = self.query_resourcespace(query)
+        self.image_metadata = {x['ref']: x for x in response}
         media_ids = [x['ref'] for x in response]
         # build new query to return image urls
-        query2 = 'user={0}&function=get_resource_path&param1=%5B{1}%5D&param2=false'.format(
+        query2 = 'user={0}&function=get_resource_path&param1=%5B{1}%5D&param2=false&param3=scr'.format(
             self.rs_user, ','.join(media_ids)
         )
         self.image_urls = self.query_resourcespace(query2)

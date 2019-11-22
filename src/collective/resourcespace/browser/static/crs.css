@@ -1,0 +1,16 @@
+.rs-result {
+    float: left;
+    width: 46%;
+    height: 200px;
+    margin-right: 2%;
+    margin-bottom: 20px;
+}
+.rs-result img {
+    max-width: 50%;
+    max-height: 100%;
+}
+.rs-metadata {
+    float: right;
+    width: 48%;
+    margin-left: 2%;
+}

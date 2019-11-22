@@ -10,15 +10,14 @@
     <metal:main fill-slot="main">
       <metal:main define-macro="main">
 
+    <link rel="stylesheet" href="++resource++collective.resourcespace/crs.css" />
+
 	<h1 class="documentFirstHeading">Search ResourceSpace</h1>
 	<form action="" method="POST">
 	  <div class="field ">
 	    <div class="fieldErrorBox"></div>
-	    <span class="option"
-		  tal:define="checked python: getattr(context, 'inherit_css', 'checked')">
-	      <input id="rs-search" name="rs-search" type="text">
-	      <label for="rs-search">Search</label>
-	    </span>
+	    <input id="rs-search" name="rs-search" type="text">
+	    <label for="rs-search">Search</label>
 	  </div>
 	  <div class="formControls">
 	    <span tal:replace="structure context/@@authenticator/authenticator"/>
@@ -26,9 +25,16 @@
 		   i18n:domain="plone" i18n:attributes="value"/>
 	  </div>
 	</form>
-    <div tal:define="images view/image_urls"
+    <div class="rs-result"
+         tal:define="images view/image_urls"
          tal:repeat="image images">
-        <img src="${python:images[image]}" height="200" />
+        <div class="rs-metadata"
+             tal:define="item python:view.image_metadata[image]">
+             <strong>title:</strong> ${item/field8}<br />
+             <strong>created:</strong> ${item/creation_date}<br />
+             <strong>ext:</strong> ${item/file_extension}<br />
+        </div>
+        <img src="${python:images[image]}" />
     </div>
 
       </metal:main>
