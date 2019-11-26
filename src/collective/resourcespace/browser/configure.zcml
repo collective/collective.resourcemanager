@@ -2,6 +2,7 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:plone="http://namespaces.plone.org/plone"
+    xmlns:z3c="http://namespaces.zope.org/z3c"
     i18n_domain="collective.resourcespace">
 
   <!-- Set overrides folder for Just-a-Bunch-Of-Templates product -->
@@ -30,5 +31,18 @@
       permission="cmf.ModifyPortalContent"
       class=".search.ResourceSpaceSearch"
       />
+
+  <plone:behavior
+    title="Import image from ResourceSpace"
+    description="Browse ResourceSpace for an image to attach"
+    provides=".behaviors.IBrowseRS"
+    />
+
+  <z3c:widgetTemplate
+    mode="input"
+    widget=".widget.INamedRSImageWidget"
+    layer="z3c.form.interfaces.IFormLayer"
+    template="templates/rs_image_input.pt"
+    />
 
 </configure>
