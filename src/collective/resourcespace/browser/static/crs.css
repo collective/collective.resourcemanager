@@ -14,3 +14,11 @@
     width: 48%;
     margin-left: 2%;
 }
+.rs-result input,
+.rs-result input:hover {
+    border: none;
+    background: transparent none;
+    cursor: pointer;
+    color: blue;
+    padding: 0;
+}

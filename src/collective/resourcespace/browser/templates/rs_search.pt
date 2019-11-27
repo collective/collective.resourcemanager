@@ -12,30 +12,49 @@
 
     <link rel="stylesheet" href="++resource++collective.resourcespace/crs.css" />
 
-	<h1 class="documentFirstHeading">Search ResourceSpace</h1>
-	<form action="" method="POST">
-	  <div class="field ">
-	    <div class="fieldErrorBox"></div>
-	    <input id="rs-search" name="rs-search" type="text">
-	    <label for="rs-search">Search</label>
-	  </div>
-	  <div class="formControls">
-	    <span tal:replace="structure context/@@authenticator/authenticator"/>
-	    <input class="standalone" value="Submit" type="submit"
-		   i18n:domain="plone" i18n:attributes="value"/>
-	  </div>
-	</form>
-    <div class="rs-result"
-         tal:define="images view/image_urls"
-         tal:repeat="image images">
-        <div class="rs-metadata"
-             tal:define="item python:view.image_metadata[image]">
-             <strong>title:</strong> ${item/field8}<br />
-             <strong>created:</strong> ${item/creation_date}<br />
-             <strong>ext:</strong> ${item/file_extension}<br />
-        </div>
-        <img src="${python:images[image]}" />
-    </div>
+    <h1 class="documentFirstHeading">Search ResourceSpace</h1>
+    <form action="" method="POST">
+      <div class="field ">
+        <div class="fieldErrorBox"></div>
+        <input id="rs-search" name="rs-search" type="text">
+        <label for="rs-search">Search</label>
+      </div>
+      <span tal:replace="structure context/@@authenticator/authenticator"/>
+      <input class="standalone" value="Submit" type="submit"
+             i18n:domain="plone" i18n:attributes="value"/>
+
+        <tal:messages repeat="message view/messages">
+            ${message}<br />
+        </tal:messages>
+
+        <tal:results define="images view/image_urls">
+            <tal:imgs condition="images">
+                Results 1-100 out of ${view/num_results}<br />
+                <div class="rs-result"
+                     tal:repeat="image images">
+                    <div class="rs-metadata"
+                         tal:define="item python:view.image_metadata[image]">
+                         <strong>title:</strong> ${item/field8}<br />
+                         <strong>id:</strong> ${item/ref}<br />
+                         <strong>created:</strong> ${item/creation_date}<br />
+                         <strong>ext:</strong> ${item/file_extension}<br />
+                    </div>
+                    <img src="${python:images[image]}" />
+                </div>
+            </tal:imgs>
+            <tal:imgs tal:condition="not:images">
+                <hr />
+                <h2>Browse Collections</h2>
+                <div class="rs-result"
+                     tal:define="images view/collections"
+                     tal:repeat="image images">
+                    <strong>title:</strong> <input name="rs-browse" value="${image/name}" type="submit"/><br />
+                    <strong>created:</strong> ${image/created}<br />
+                    <strong>keywords:</strong> ${image/keywords}<br />
+                </div>
+            </tal:imgs>
+        </tal:results>
+    </form>
 
       </metal:main>
     </metal:main>
