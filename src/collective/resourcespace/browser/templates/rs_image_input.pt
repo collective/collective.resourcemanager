@@ -92,6 +92,18 @@
             />
         <label
             tal:attributes="for string:${view/id}-replace" i18n:translate="image_replace">Replace with new image upload</label>
+    </div>
+    <div tal:omit-tag="not:allow_nochange" style="padding-left: 1.5em; padding-top: 0.5em;">
+        <input
+            type="file"
+            tal:attributes="id string:${view/id}-input;
+                            name view/name;
+                            size view/size;
+                            disabled view/disabled;
+                            maxlength view/maxlength;"
+            />
+    </div>
+    <div tal:condition="allow_nochange" style="padding-top: 1em;">
         <br />
         <input
             type="radio"
@@ -106,20 +118,11 @@
             tal:attributes="for string:${view/id}-replaceRS" i18n:translate="image_replace">Replace with new ResourceSpace image</label>
     </div>
     <div tal:omit-tag="not:allow_nochange" style="padding-left: 1.5em; padding-top: 0.5em;">
-        <input
-            type="file"
-            tal:attributes="id string:${view/id}-input;
-                            name view/name;
-                            size view/size;
-                            disabled view/disabled;
-                            maxlength view/maxlength;"
-            />
-        OR<br />
         <input type="text" id="rs-url-input" name="rs-url-input"
             tal:attributes="disabled view/disabled;"
             />
         <label for="rs-url-input">ResourceSpace image URL</label>
-        <!-- <a href="#">Browse RS</a> -->
+        <a href="rs-search?rs-search=dalai" class="pat-plone-modal">Browse RS</a>
         <script tal:condition="python:allow_nochange and action != 'replace'" type="text/javascript">
             document.getElementById('<tal:rep content="view/id"/>-input').disabled=true;
             document.getElementById('rs-url-input').disabled=true;

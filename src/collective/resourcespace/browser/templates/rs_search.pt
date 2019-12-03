@@ -38,6 +38,9 @@
                          <strong>id:</strong> ${item/ref}<br />
                          <strong>created:</strong> ${item/creation_date}<br />
                          <strong>ext:</strong> ${item/file_extension}<br />
+                         <span onclick="document.getElementById('rs-url-input').value = '${python:images[image]}'; $(this).trigger('destroy.plone-modal.patterns')">
+                             Use this image
+                         </span>
                     </div>
                     <img src="${python:images[image]}" />
                 </div>
