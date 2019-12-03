@@ -35,8 +35,18 @@
   <plone:behavior
     title="Import image from ResourceSpace"
     description="Browse ResourceSpace for an image to attach"
-    provides=".behaviors.IBrowseRS"
+    provides=".behaviors.IBrowseRSBehavior"
+    marker=".behaviors.IBrowseRS"
     factory=".behaviors.BrowseRS"
+    />
+
+  <browser:viewlet
+    name="rsimage"
+    for=".behaviors.IBrowseRS"
+    view="plone.app.layout.globals.interfaces.IViewView"
+    manager="plone.app.layout.viewlets.interfaces.IAboveContentTitle"
+    template="templates/rsimage.pt"
+    permission="zope2.View"
     />
 
   <z3c:widgetTemplate

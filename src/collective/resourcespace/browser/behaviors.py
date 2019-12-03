@@ -8,14 +8,18 @@ from plone.namedfile import field as namedfile
 from plone.namedfile.file import NamedBlobImage
 from plone.supermodel import model
 from zope.component import adapter
-from zope.interface import provider, implementer
+from zope.interface import provider, implementer, Interface
 from zope.schema import ValidationError
 
 from collective.resourcespace.browser.widget import NamedRSImageWidget
 
 
+class IBrowseRS(Interface):
+    pass
+
+
 @provider(IFormFieldProvider)
-class IBrowseRS(model.Schema):
+class IBrowseRSBehavior(model.Schema):
 
     image = namedfile.NamedBlobImage(
         title=u"Image",
@@ -27,7 +31,7 @@ class IBrowseRS(model.Schema):
         NamedRSImageWidget)
 
 
-@implementer(IBrowseRS)
+@implementer(IBrowseRSBehavior)
 @adapter(IDexterityContent)
 class BrowseRS(object):
     """If URL was entered, store to NamedBlobImage
