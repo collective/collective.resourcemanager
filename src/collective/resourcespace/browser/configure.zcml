@@ -36,6 +36,7 @@
     title="Import image from ResourceSpace"
     description="Browse ResourceSpace for an image to attach"
     provides=".behaviors.IBrowseRS"
+    factory=".behaviors.BrowseRS"
     />
 
   <z3c:widgetTemplate

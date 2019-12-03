@@ -59,9 +59,9 @@
             type="radio"
             value="nochange"
             class="noborder"
+            onclick="document.getElementById('${view/id}-input').disabled=true; document.getElementById('rs-url-input').disabled=true"
             tal:attributes="name string:${view/name}.action;
                             id string:${view/id}-nochange;
-                            onclick string:document.getElementById('${view/id}-input').disabled=true;
                             checked python:'checked' if action == 'nochange' else None"
             />
         <label
@@ -72,9 +72,9 @@
                 type="radio"
                 value="remove"
                 class="noborder"
+                onclick="document.getElementById('${view/id}-input').disabled=true; document.getElementById('rs-url-input').disabled=true"
                 tal:attributes="name string:${view/name}.action;
                                 id string:${view/id}-remove;
-                                onclick string:document.getElementById('${view/id}-input').disabled=true;
                                 checked python:'checked' if action == 'remove' else None"
                 />
             <label
@@ -85,13 +85,25 @@
             type="radio"
             value="replace"
             class="noborder"
+            onclick="document.getElementById('${view/id}-input').disabled=false; document.getElementById('rs-url-input').disabled=true"
             tal:attributes="name string:${view/name}.action;
                             id string:${view/id}-replace;
-                            onclick string:document.getElementById('${view/id}-input').disabled=false;
                             checked python:'checked' if action == 'replace' else None"
             />
         <label
-            tal:attributes="for string:${view/id}-replace" i18n:translate="image_replace">Replace with new image</label>
+            tal:attributes="for string:${view/id}-replace" i18n:translate="image_replace">Replace with new image upload</label>
+        <br />
+        <input
+            type="radio"
+            value="replaceRS"
+            class="noborder"
+            onclick="document.getElementById('${view/id}-input').disabled=true; document.getElementById('rs-url-input').disabled=false"
+            tal:attributes="name string:${view/name}.action;
+                            id string:${view/id}-replaceRS;
+                            checked python:'checked' if action == 'replaceRS' else None"
+            />
+        <label
+            tal:attributes="for string:${view/id}-replaceRS" i18n:translate="image_replace">Replace with new ResourceSpace image</label>
     </div>
     <div tal:omit-tag="not:allow_nochange" style="padding-left: 1.5em; padding-top: 0.5em;">
         <input
@@ -102,10 +114,15 @@
                             disabled view/disabled;
                             maxlength view/maxlength;"
             />
-        <script tal:condition="python:allow_nochange and action != 'replace'" type="text/javascript"
-            tal:content="string:document.getElementById('${view/id}-input').disabled=true;">
+        OR<br />
+        <input type="text" id="rs-url-input" name="rs-url-input"
+            tal:attributes="disabled view/disabled;"
+            />
+        <label for="rs-url-input">ResourceSpace image URL</label>
+        <!-- <a href="#">Browse RS</a> -->
+        <script tal:condition="python:allow_nochange and action != 'replace'" type="text/javascript">
+            document.getElementById('<tal:rep content="view/id"/>-input').disabled=true;
+            document.getElementById('rs-url-input').disabled=true;
         </script>
-        OR
-        Browse ResourceSpace
     </div>
 </span>
