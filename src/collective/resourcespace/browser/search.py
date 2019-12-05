@@ -1,4 +1,5 @@
 import hashlib
+import json
 import requests
 import urllib.parse
 from plone import api
@@ -36,13 +37,13 @@ class ResourceSpaceSearch(BrowserView):
 
     def __call__(self):
         form = self.request.form
-        search_term = form.get('rs-search')
-        browse_term = form.get('rs-browse')
+        search_term = form.get('rs_search')
+        browse_term = form.get('rs_browse')
         if not form or not(search_term or browse_term):
             return self.template()
         # do the search based on term or collection name
         if search_term:
-            search_term = urllib.parse.quote_plus(form['rs-search'])
+            search_term = urllib.parse.quote_plus(form['rs_search'])
         else:
             search_term = urllib.parse.quote_plus('!' + browse_term)
         query = 'user={0}&function=do_search&param1={1}&param2=1'.format(
@@ -59,6 +60,11 @@ class ResourceSpaceSearch(BrowserView):
         self.image_urls = self.query_resourcespace(query2)
         if not self.image_urls and not self.messages:
             self.messages.append("No images found")
+        if form.get('type', '') == 'json':
+            return json.dumps({
+                'metadata': self.image_metadata,
+                'urls': self.image_urls,
+                })
         return self.template()
 
     def collections(self):

@@ -22,3 +22,7 @@
     color: blue;
     padding: 0;
 }
+.imageaction {
+    cursor: pointer;
+    color: blue;
+}
