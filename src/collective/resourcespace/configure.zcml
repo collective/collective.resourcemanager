@@ -40,6 +40,11 @@
       name="collective.resourcespace-hiddenprofiles"
       />
 
+  <subscriber
+    for="plone.app.contenttypes.interfaces.IImage
+         zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+    handler=".events.upload_image"
+    />
   <!-- -*- extra stuff goes here -*- -->
 
 </configure>
