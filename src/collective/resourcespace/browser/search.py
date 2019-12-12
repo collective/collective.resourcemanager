@@ -29,11 +29,22 @@ class ResourceSpaceSearch(BrowserView):
         key_query = self.rs_private_key + user_query
         hash.update(key_query.encode('utf-8'))
         request_url = self.rs_url + '?' + user_query + '&sign=' + hash.hexdigest()
-        response = requests.get(request_url)
+        exc = requests.exceptions
+        try:
+            response = requests.get(request_url, timeout=5)
+        except (exc.ConnectTimeout, exc.ConnectionError) as e:
+            self.messages.append(str(e))
+            return []
         if response.status_code != 200:
             self.messages.append(response.reason)
             return []
-        return response.json()
+        try:
+            return response.json()
+        except ValueError:
+            self.messages.append('The json returned from {0} is not valid'.format(
+                user_query
+            ))
+            return []
 
     def __call__(self):
         form = self.request.form
@@ -46,7 +57,7 @@ class ResourceSpaceSearch(BrowserView):
             search_term = urllib.parse.quote_plus(form['rs_search'])
         else:
             search_term = urllib.parse.quote_plus('!' + browse_term)
-        query = '&function=do_search&param1={1}&param2=1'.format(
+        query = '&function=do_search&param1={0}&param2=1'.format(
             search_term
         )
         response = self.query_resourcespace(query)
@@ -54,7 +65,7 @@ class ResourceSpaceSearch(BrowserView):
         self.num_results = len(response)
         media_ids = [x['ref'] for x in response[:100]]
         # build new query to return image urls
-        query2 = '&function=get_resource_path&param1=%5B{1}%5D&param2=false&param3=scr'.format(
+        query2 = '&function=get_resource_path&param1=%5B{0}%5D&param2=false&param3=scr'.format(
             ','.join(media_ids)
         )
         self.image_urls = self.query_resourcespace(query2)
@@ -62,6 +73,7 @@ class ResourceSpaceSearch(BrowserView):
             self.messages.append("No images found")
         if form.get('type', '') == 'json':
             return json.dumps({
+                'errors': self.messages,
                 'metadata': self.image_metadata,
                 'urls': self.image_urls,
                 })

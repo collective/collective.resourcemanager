@@ -63,9 +63,14 @@
     <script type="text/javascript">
         function populate_results(data) {
             var imagedata = JSON.parse(data);
+            var errors = imagedata['errors'];
             var metadata = imagedata['metadata'];
             var urls = imagedata['urls'];
             var results = '<p class="showbrowser">&lt; Browse the Collections</p>';
+            for (error in errors) {
+                err_str = errors[error].replace(/\&/g, '&amp;');
+                results += '<p style="color: red">' + err_str + '</p>'
+            }
             if (urls.length == 0) {
                 results += '<p>No images found</p>';
             }
