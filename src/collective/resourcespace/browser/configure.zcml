@@ -32,6 +32,14 @@
       class=".search.ResourceSpaceSearch"
       />
 
+  <!-- same view, different name, for changes based on context -->
+  <browser:page
+      name="rs-field-search"
+      for="*"
+      permission="cmf.ModifyPortalContent"
+      class=".search.ResourceSpaceSearch"
+      />
+
   <plone:behavior
     title="Import image from ResourceSpace"
     description="Browse ResourceSpace for an image to attach"

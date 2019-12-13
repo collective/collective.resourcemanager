@@ -66,6 +66,7 @@
             var errors = imagedata['errors'];
             var metadata = imagedata['metadata'];
             var urls = imagedata['urls'];
+            var search_context = imagedata['search_context']
             var results = '<p class="showbrowser">&lt; Browse the Collections</p>';
             for (error in errors) {
                 err_str = errors[error].replace(/\&/g, '&amp;');
@@ -81,7 +82,7 @@
                 results += '<strong>id:</strong> ' + metadata[item].ref + '<br />';
                 results += '<strong>created:</strong> ' + metadata[item].creation_date + '<br />';
                 results += '<strong>ext:</strong> ' + metadata[item].file_extension + '<br />';
-                results += '<span class="imageaction" data-url=' + urls[item] + '>Use this image</span>';
+                results += '<span class="imageaction ' + search_context + '" data-url=' + urls[item] + '>Use this image</span>';
                 results += '</div>';
                 results += '<img src=' + urls[item] + ' />';
                 results += '</div>';
@@ -95,7 +96,7 @@
             $('.rsresults').html('<h2 class="loading">Results for ' + searchterm + '</h2>')
             $.ajax({
                 headers: { Accept: "application/json"},
-                url: "rs-search",
+                url: "<tal:context replace="view/search_context" />",
                 type: "GET",
                 data: {
                     rs_search: searchterm,

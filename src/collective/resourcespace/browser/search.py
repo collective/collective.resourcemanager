@@ -22,6 +22,7 @@ class ResourceSpaceSearch(BrowserView):
         self.rs_private_key = context.portal_registry['{0}.rs_private_key'.format(reg_prefix)]
         self.image_urls = []
         self.messages = []
+        self.search_context = 'rs-search'
 
     def query_resourcespace(self, query):
         hash = hashlib.sha256()
@@ -50,6 +51,7 @@ class ResourceSpaceSearch(BrowserView):
         form = self.request.form
         search_term = form.get('rs_search')
         browse_term = form.get('rs_browse')
+        self.search_context = self.request._steps[-1]
         if not form or not(search_term or browse_term):
             return self.template()
         # do the search based on term or collection name
@@ -73,6 +75,7 @@ class ResourceSpaceSearch(BrowserView):
             self.messages.append("No images found")
         if form.get('type', '') == 'json':
             return json.dumps({
+                'search_context': self.search_context,
                 'errors': self.messages,
                 'metadata': self.image_metadata,
                 'urls': self.image_urls,
