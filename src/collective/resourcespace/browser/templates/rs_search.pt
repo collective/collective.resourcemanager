@@ -117,8 +117,23 @@
                 do_ajax_search($(this).val());
             });
             $('.rsresults').on('click', '.imageaction', function(){
-                document.getElementById("rs-url-input").value = $(this).attr('data-url');
-                $(this).trigger("destroy.plone-modal.patterns");
+                if ($(this).hasClass('rs-field-search')) {
+                    document.getElementById("rs-url-input").value = $(this).attr('data-url');
+                    $(this).trigger("destroy.plone-modal.patterns");
+                } else {
+                    $.ajax({
+                        headers: { Accept: "application/json"},
+                        url: "copy-img-from-rs",
+                        type: "POST",
+                        data: {
+                            image: $(this).attr('data-url'),
+                            type: 'json'
+                        },
+                        success: function(data) {
+                            console.log(data)
+                        }
+                    });
+                }
             });
             $('.rsresults').on('click', '.showbrowser', function(){
                 $('.rsresults').empty();

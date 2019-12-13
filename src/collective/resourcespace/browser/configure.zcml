@@ -40,6 +40,13 @@
       class=".search.ResourceSpaceSearch"
       />
 
+  <browser:page
+      name="copy-img-from-rs"
+      for="*"
+      permission="cmf.ModifyPortalContent"
+      class=".search.ResourceSpaceCopy"
+      />
+
   <plone:behavior
     title="Import image from ResourceSpace"
     description="Browse ResourceSpace for an image to attach"

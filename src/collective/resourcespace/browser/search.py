@@ -2,13 +2,16 @@ import hashlib
 import json
 import requests
 import urllib.parse
+from PIL import Image
+from plone import api
+from plone.namedfile.file import NamedBlobImage
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
+from zope.schema import ValidationError
 
 
 class ResourceSpaceSearch(BrowserView):
     """Search ResourceSpace Media
-       Copy selected media to the current folder
     """
 
     template = ViewPageTemplateFile('templates/rs_search.pt')
@@ -86,3 +89,39 @@ class ResourceSpaceSearch(BrowserView):
         query = '&function=search_public_collections&param2=name&param3=ASC&param4=0'
         response = self.query_resourcespace(query)
         return response
+
+
+class ResourceSpaceCopy(BrowserView):
+    """Copy selected media to the current folder
+    """
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+        # reg_prefix = 'collective.resourcespace.browser.settings.IResourceSpaceKeys'
+        # self.rs_url = context.portal_registry['{0}.rs_url'.format(reg_prefix)]
+        # self.rs_user = context.portal_registry['{0}.rs_user'.format(reg_prefix)]
+        # self.rs_private_key = context.portal_registry['{0}.rs_private_key'.format(reg_prefix)]
+
+    def __call__(self):
+        img_url = self.request.form.get('image')
+        if not img_url:
+            return "Image ID not found"
+        # rs_search = ResourceSpaceSearch(self.context, self.request)
+        # query = '&function=create_resource&param1=1&param2=0'
+        # resource_id = rs_search.query_resourcespace(query)
+        response = requests.get(img_url)
+        try:
+            Image.open(requests.get(img_url, stream=True).raw)
+        except OSError as e:
+            raise ValidationError(
+                '{}\n ResourceSpace url may be invalid'.format(e))
+        blob = NamedBlobImage(
+            data=response.content)
+        new_image = api.content.create(
+            type='Image',
+            image=blob,
+            container=self.context,
+            title='Test'  # set using metadata
+        )
+        return "Image copied to {}".format(new_image.absolute_url())
