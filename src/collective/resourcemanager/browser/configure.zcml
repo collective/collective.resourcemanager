@@ -3,18 +3,12 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:plone="http://namespaces.plone.org/plone"
     xmlns:z3c="http://namespaces.zope.org/z3c"
-    i18n_domain="collective.resourcespace">
+    i18n_domain="collective.resourcemanager">
 
-  <!-- Set overrides folder for Just-a-Bunch-Of-Templates product -->
-  <include package="z3c.jbot" file="meta.zcml" />
-  <browser:jbot
-      directory="overrides"
-      layer="collective.resourcespace.interfaces.ICollectiveResourcespaceLayer"
-      />
 
   <!-- Publish static files -->
   <browser:resourceDirectory
-      name="collective.resourcespace"
+      name="collective.resourcemanager"
       directory="static"
       />
 
@@ -48,8 +42,8 @@
       />
 
   <plone:behavior
-    title="Import image from ResourceSpace"
-    description="Browse ResourceSpace for an image to attach"
+    title="ResourceManager Image field"
+    description="Replacement for Lead Image, browse external resources for an image to attach"
     provides=".behaviors.IBrowseRSBehavior"
     marker=".behaviors.IBrowseRS"
     factory=".behaviors.BrowseRS"

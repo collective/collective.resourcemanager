@@ -10,7 +10,7 @@
     <metal:main fill-slot="main">
       <metal:main define-macro="main">
 
-    <link rel="stylesheet" href="++resource++collective.resourcespace/crs.css" />
+    <link rel="stylesheet" href="++resource++collective.resourcemanager/crs.css" />
 
     <h1 class="documentFirstHeading">Search ResourceSpace</h1>
     <form action="" method="POST"

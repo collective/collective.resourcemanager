@@ -3,7 +3,7 @@
    This text does not appear on pypi or github. It is a comment.
 
 ========================
-collective.resourcespace
+collective.resourcemanager
 ========================
 
 Tell me what your product does
@@ -38,14 +38,14 @@ This product has been translated into
 Installation
 ------------
 
-Install collective.resourcespace by adding it to your buildout::
+Install collective.resourcemanager by adding it to your buildout::
 
     [buildout]
 
     ...
 
     eggs =
-        collective.resourcespace
+        collective.resourcemanager
 
 
 and then running ``bin/buildout``
@@ -54,8 +54,8 @@ and then running ``bin/buildout``
 Contribute
 ----------
 
-- Issue Tracker: https://github.com/collective/collective.resourcespace/issues
-- Source Code: https://github.com/collective/collective.resourcespace
+- Issue Tracker: https://github.com/collective/collective.resourcemanager/issues
+- Source Code: https://github.com/collective/collective.resourcemanager
 - Documentation: https://docs.plone.org/foo/bar
 
 

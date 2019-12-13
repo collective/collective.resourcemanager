@@ -115,14 +115,14 @@
                             checked python:'checked' if action == 'replaceRS' else None"
             />
         <label
-            tal:attributes="for string:${view/id}-replaceRS" i18n:translate="image_replace">Replace with new ResourceSpace image</label>
+            tal:attributes="for string:${view/id}-replaceRS" i18n:translate="image_replace">Replace with new resource image</label>
     </div>
     <div tal:omit-tag="not:allow_nochange" style="padding-left: 1.5em; padding-top: 0.5em;">
         <input type="text" id="rs-url-input" name="rs-url-input"
             tal:attributes="disabled view/disabled;"
             />
-        <label for="rs-url-input">ResourceSpace image URL</label>
-        <a href="rs-field-search" class="pat-plone-modal">Browse RS</a>
+        <label for="rs-url-input">Resource image URL</label>
+        <a href="rs-field-search" class="pat-plone-modal">Browse Resources</a>
         <script tal:condition="python:allow_nochange and action != 'replace'" type="text/javascript">
             document.getElementById('<tal:rep content="view/id"/>-input').disabled=true;
             document.getElementById('rs-url-input').disabled=true;

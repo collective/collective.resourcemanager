@@ -5,10 +5,10 @@ import pkg_resources
 import subprocess
 
 
-domain = 'collective.resourcespace'
+domain = 'collective.resourcemanager'
 os.chdir(pkg_resources.resource_filename(domain, ''))
 os.chdir('../../../')
-target_path = 'src/collective/resourcespace/'
+target_path = 'src/collective/resourcemanager/'
 locale_path = target_path + 'locales/'
 i18ndude = './bin/i18ndude'
 

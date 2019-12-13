@@ -4,17 +4,17 @@
 #
 # Run this robot test stand-alone:
 #
-#  $ bin/test -s collective.resourcespace -t test_example.robot --all
+#  $ bin/test -s collective.resourcemanager -t test_example.robot --all
 #
 # Run this robot test with robot server (which is faster):
 #
 # 1) Start robot server:
 #
-# $ bin/robot-server --reload-path src collective.resourcespace.testing.COLLECTIVE_RESOURCESPACE_ACCEPTANCE_TESTING
+# $ bin/robot-server --reload-path src collective.resourcemanager.testing.COLLECTIVE_RESOURCEMANAGER_ACCEPTANCE_TESTING
 #
 # 2) Run robot tests:
 #
-# $ bin/robot src/collective/resourcespace/tests/robot/test_example.robot
+# $ bin/robot src/collective/resourcemanager/tests/robot/test_example.robot
 #
 # See the http://docs.plone.org for further details (search for robot
 # framework).

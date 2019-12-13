@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Installer for the collective.resourcespace package."""
+"""Installer for the collective.resourcemanager package."""
 
 from setuptools import find_packages
 from setuptools import setup
@@ -13,9 +13,10 @@ long_description = '\n\n'.join([
 
 
 setup(
-    name='collective.resourcespace',
+    name='collective.resourcemanager',
     version='1.0a1',
-    description="A TinyMCE plugin to search a ResourceSpace database for media",
+    description="Base package for managing connections to external resource \
+        managers.",
     long_description=long_description,
     # Get more from https://pypi.org/classifiers/
     classifiers=[
@@ -31,12 +32,12 @@ setup(
     keywords='Python Plone',
     author='Six Feet Up',
     author_email='info@sixfeetup.com',
-    url='https://github.com/collective/collective.resourcespace',
+    url='https://github.com/collective/collective.resourcemanager',
     project_urls={
-        'PyPI': 'https://pypi.python.org/pypi/collective.resourcespace',
-        'Source': 'https://github.com/collective/collective.resourcespace',
-        'Tracker': 'https://github.com/collective/collective.resourcespace/issues',
-        # 'Documentation': 'https://collective.resourcespace.readthedocs.io/en/latest/',
+        'PyPI': 'https://pypi.python.org/pypi/collective.resourcemanager',
+        'Source': 'https://github.com/collective/collective.resourcemanager',
+        'Tracker': 'https://github.com/collective/collective.resourcemanager/issues',
+        # 'Documentation': 'https://collective.resourcemanager.readthedocs.io/en/latest/',
     },
     license='GPL version 2',
     packages=find_packages('src', exclude=['ez_setup']),
@@ -68,6 +69,6 @@ setup(
     [z3c.autoinclude.plugin]
     target = plone
     [console_scripts]
-    update_locale = collective.resourcespace.locales.update:update_locale
+    update_locale = collective.resourcemanager.locales.update:update_locale
     """,
 )

@@ -11,7 +11,7 @@ from zope.component import adapter
 from zope.interface import provider, implementer, Interface
 from zope.schema import ValidationError
 
-from collective.resourcespace.browser.widget import NamedRSImageWidget
+from collective.resourcemanager.browser.widget import NamedRSImageWidget
 
 
 class IBrowseRS(Interface):

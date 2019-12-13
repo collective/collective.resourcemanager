@@ -7,10 +7,10 @@ from plone.app.testing import IntegrationTesting
 from plone.app.testing import PloneSandboxLayer
 from plone.testing import z2
 
-import collective.resourcespace
+import collective.resourcemanager
 
 
-class CollectiveResourcespaceLayer(PloneSandboxLayer):
+class CollectiveResourcemanagerLayer(PloneSandboxLayer):
 
     defaultBases = (PLONE_APP_CONTENTTYPES_FIXTURE,)
 
@@ -20,32 +20,32 @@ class CollectiveResourcespaceLayer(PloneSandboxLayer):
         # layer.
         import plone.restapi
         self.loadZCML(package=plone.restapi)
-        self.loadZCML(package=collective.resourcespace)
+        self.loadZCML(package=collective.resourcemanager)
 
     def setUpPloneSite(self, portal):
-        applyProfile(portal, 'collective.resourcespace:default')
+        applyProfile(portal, 'collective.resourcemanager:default')
 
 
-COLLECTIVE_RESOURCESPACE_FIXTURE = CollectiveResourcespaceLayer()
+COLLECTIVE_RESOURCEMANAGER_FIXTURE = CollectiveResourcemanagerLayer()
 
 
-COLLECTIVE_RESOURCESPACE_INTEGRATION_TESTING = IntegrationTesting(
-    bases=(COLLECTIVE_RESOURCESPACE_FIXTURE,),
-    name='CollectiveResourcespaceLayer:IntegrationTesting',
+COLLECTIVE_RESOURCEMANAGER_INTEGRATION_TESTING = IntegrationTesting(
+    bases=(COLLECTIVE_RESOURCEMANAGER_FIXTURE,),
+    name='CollectiveResourcemanagerLayer:IntegrationTesting',
 )
 
 
-COLLECTIVE_RESOURCESPACE_FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(COLLECTIVE_RESOURCESPACE_FIXTURE,),
-    name='CollectiveResourcespaceLayer:FunctionalTesting',
+COLLECTIVE_RESOURCEMANAGER_FUNCTIONAL_TESTING = FunctionalTesting(
+    bases=(COLLECTIVE_RESOURCEMANAGER_FIXTURE,),
+    name='CollectiveResourcemanagerLayer:FunctionalTesting',
 )
 
 
-COLLECTIVE_RESOURCESPACE_ACCEPTANCE_TESTING = FunctionalTesting(
+COLLECTIVE_RESOURCEMANAGER_ACCEPTANCE_TESTING = FunctionalTesting(
     bases=(
-        COLLECTIVE_RESOURCESPACE_FIXTURE,
+        COLLECTIVE_RESOURCEMANAGER_FIXTURE,
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
         z2.ZSERVER_FIXTURE,
     ),
-    name='CollectiveResourcespaceLayer:AcceptanceTesting',
+    name='CollectiveResourcemanagerLayer:AcceptanceTesting',
 )

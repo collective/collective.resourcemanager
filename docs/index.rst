@@ -1,5 +1,5 @@
 ========================
-collective.resourcespace
+collective.resourcemanager
 ========================
 
 User documentation

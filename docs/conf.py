@@ -42,7 +42,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'collective.resourcespace'
+project = u'collective.resourcemanager'
 copyright = u'Six Feet Up (sixfeetup)'
 author = u'Six Feet Up (sixfeetup)'
 
@@ -199,7 +199,7 @@ html_static_path = ['_static']
 #html_search_scorer = 'scorer.js'
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'collective.resourcespacedoc'
+htmlhelp_basename = 'collective.resourcemanagerdoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
