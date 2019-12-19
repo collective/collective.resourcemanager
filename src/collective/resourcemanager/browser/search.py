@@ -1,127 +1,30 @@
-import hashlib
-import json
-import requests
-import urllib.parse
-from PIL import Image
-from plone import api
-from plone.namedfile.file import NamedBlobImage
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
-from zope.schema import ValidationError
+
+from resourcemanager.resourcespace.browser.search import ResourceSpaceSearch
 
 
-class ResourceSpaceSearch(BrowserView):
-    """Search ResourceSpace Media
+class ResourceSearch(BrowserView):
+    """Search selected resources
     """
 
-    template = ViewPageTemplateFile('templates/rs_search.pt')
+    template = ViewPageTemplateFile('templates/rm_search.pt')
 
     def __init__(self, context, request):
         self.context = context
         self.request = request
-        reg_prefix = 'collective.resourcemanager.browser.settings.IResourceSpaceKeys'
-        self.rs_url = context.portal_registry['{0}.rs_url'.format(reg_prefix)]
-        self.rs_user = context.portal_registry['{0}.rs_user'.format(reg_prefix)]
-        self.rs_private_key = context.portal_registry['{0}.rs_private_key'.format(reg_prefix)]
-        self.image_urls = []
-        self.messages = []
-        self.search_context = 'rs-search'
-
-    def query_resourcespace(self, query):
-        hash = hashlib.sha256()
-        user_query = 'user={0}'.format(self.rs_user) + query
-        key_query = self.rs_private_key + user_query
-        hash.update(key_query.encode('utf-8'))
-        request_url = self.rs_url + '?' + user_query + '&sign=' + hash.hexdigest()
-        exc = requests.exceptions
-        try:
-            response = requests.get(request_url, timeout=5)
-        except (exc.ConnectTimeout, exc.ConnectionError) as e:
-            self.messages.append(str(e))
-            return []
-        if response.status_code != 200:
-            self.messages.append(response.reason)
-            return []
-        try:
-            return response.json()
-        except ValueError:
-            self.messages.append('The json returned from {0} is not valid'.format(
-                user_query
-            ))
-            return []
+        self.search_context = 'rm-search'
+        self.resources = [ResourceSpaceSearch(context, request)]
 
     def __call__(self):
-        form = self.request.form
-        search_term = form.get('rs_search')
-        browse_term = form.get('rs_browse')
         self.search_context = self.request._steps[-1]
-        if not form or not(search_term or browse_term):
-            return self.template()
-        # do the search based on term or collection name
-        if search_term:
-            search_term = urllib.parse.quote_plus(form['rs_search'])
-        else:
-            search_term = urllib.parse.quote_plus('!' + browse_term)
-        query = '&function=do_search&param1={0}&param2=1'.format(
-            search_term
-        )
-        response = self.query_resourcespace(query)
-        self.image_metadata = {x['ref']: x for x in response}
-        self.num_results = len(response)
-        media_ids = [x['ref'] for x in response[:100]]
-        # build new query to return image urls
-        query2 = '&function=get_resource_path&param1=%5B{0}%5D&param2=false&param3=scr'.format(
-            ','.join(media_ids)
-        )
-        self.image_urls = self.query_resourcespace(query2)
-        if not self.image_urls and not self.messages:
-            self.messages.append("No images found")
-        if form.get('type', '') == 'json':
-            return json.dumps({
-                'search_context': self.search_context,
-                'errors': self.messages,
-                'metadata': self.image_metadata,
-                'urls': self.image_urls,
-                })
         return self.template()
 
-    def collections(self):
-        query = '&function=search_public_collections&param2=name&param3=ASC&param4=0'
-        response = self.query_resourcespace(query)
-        return response
 
-
-class ResourceSpaceCopy(BrowserView):
+class ResourceCopy(BrowserView):
     """Copy selected media to the current folder
     """
 
     def __init__(self, context, request):
         self.context = context
         self.request = request
-        # reg_prefix = 'collective.resourcemanager.browser.settings.IResourceSpaceKeys'
-        # self.rs_url = context.portal_registry['{0}.rs_url'.format(reg_prefix)]
-        # self.rs_user = context.portal_registry['{0}.rs_user'.format(reg_prefix)]
-        # self.rs_private_key = context.portal_registry['{0}.rs_private_key'.format(reg_prefix)]
-
-    def __call__(self):
-        img_url = self.request.form.get('image')
-        if not img_url:
-            return "Image ID not found"
-        # rs_search = ResourceSpaceSearch(self.context, self.request)
-        # query = '&function=create_resource&param1=1&param2=0'
-        # resource_id = rs_search.query_resourcespace(query)
-        response = requests.get(img_url)
-        try:
-            Image.open(requests.get(img_url, stream=True).raw)
-        except OSError as e:
-            raise ValidationError(
-                '{}\n ResourceSpace url may be invalid'.format(e))
-        blob = NamedBlobImage(
-            data=response.content)
-        new_image = api.content.create(
-            type='Image',
-            image=blob,
-            container=self.context,
-            title='Test'  # set using metadata
-        )
-        return "Image copied to {}".format(new_image.absolute_url())

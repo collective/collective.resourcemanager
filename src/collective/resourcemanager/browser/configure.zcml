@@ -13,32 +13,24 @@
       />
 
   <browser:page
-      name="resourcespace-keys"
+      name="resourcemanager-settings"
       for="Products.CMFPlone.interfaces.IPloneSiteRoot"
       permission="plone.app.controlpanel.Editing"
-      class=".settings.ResourceSpaceKeysView"
+      class=".settings.ResourceKeysView"
       />
 
   <browser:page
-      name="rs-search"
+      name="rm-search"
       for="*"
       permission="cmf.ModifyPortalContent"
-      class=".search.ResourceSpaceSearch"
-      />
-
-  <!-- same view, different name, for changes based on context -->
-  <browser:page
-      name="rs-field-search"
-      for="*"
-      permission="cmf.ModifyPortalContent"
-      class=".search.ResourceSpaceSearch"
+      class=".search.ResourceSearch"
       />
 
   <browser:page
-      name="copy-img-from-rs"
+      name="copy-img-from-rm"
       for="*"
       permission="cmf.ModifyPortalContent"
-      class=".search.ResourceSpaceCopy"
+      class=".search.ResourceCopy"
       />
 
   <plone:behavior

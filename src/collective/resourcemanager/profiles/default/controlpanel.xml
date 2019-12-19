@@ -5,12 +5,12 @@
     i18n:domain="collective.resourcemanager">
 
     <configlet
-        title="ResourceSpace Keys"
-        action_id="ResourceSpaceKeys"
+        title="ResourceManager Settings"
+        action_id="ResourceManagerSettings"
         appId=""
         category="Products"
         condition_expr=""
-        url_expr="string:${portal_url}/@@resourcespace-keys"
+        url_expr="string:${portal_url}/@@resourcemanager-settings"
         icon_expr="string:${portal_url}/tag_icon.gif"
         visible="True"
         i18n:attributes="title">

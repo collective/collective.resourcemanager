@@ -6,12 +6,12 @@
     xmlns:i18n="http://xml.zope.org/namespaces/i18n">
 
   <action
-      action_id="rs-search"
+      action_id="rm-search"
       category="object"
       condition_expr=""
       i18n:attributes="title"
-      title="DAM Search"
-      url_expr="string:${object_url}/rs-search"
+      title="Import from DAM"
+      url_expr="string:${object_url}/rm-search"
       visible="True">
     <permission value="Modify portal content"/>
   </action>
