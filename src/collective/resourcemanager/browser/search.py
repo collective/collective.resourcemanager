@@ -6,7 +6,7 @@ from resourcemanager.resourcespace.search import ResourceSpaceSearch
 
 
 def existing_copies(context):
-    images = api.content.find(context=context)
+    images = api.content.find(context=context, portal_type='Image')
     return [x.external_url for x in images if x.external_url]
 
 
