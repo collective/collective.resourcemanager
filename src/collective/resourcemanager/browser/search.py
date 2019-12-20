@@ -1,7 +1,13 @@
+from plone import api
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
-from resourcemanager.resourcespace.browser.search import ResourceSpaceSearch
+from resourcemanager.resourcespace.search import ResourceSpaceSearch
+
+
+def existing_copies(context):
+    images = api.content.find(context=context)
+    return [x.external_url for x in images if x.external_url]
 
 
 class ResourceSearch(BrowserView):

@@ -1,4 +1,7 @@
 <?xml version="1.0"?>
 <object name="portal_catalog">
-  <!--<column value="my_meta_column"/>-->
+  <column value="external_url"/>
+  <index name="external_url" meta_type="FieldIndex">
+    <indexed_attr value="external_url"/>
+   </index>
 </object>

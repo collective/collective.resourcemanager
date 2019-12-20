@@ -7,6 +7,7 @@ from plone.dexterity.interfaces import IDexterityContent
 from plone.namedfile import field as namedfile
 from plone.namedfile.file import NamedBlobImage
 from plone.supermodel import model
+from zope import schema
 from zope.component import adapter
 from zope.interface import provider, implementer, Interface
 from zope.schema import ValidationError
@@ -64,3 +65,13 @@ class BrowseRS(object):
                 self.context.image = blob
         else:
             self.context.image = value
+
+
+@provider(IFormFieldProvider)
+class IImageResourceData(model.Schema):
+
+    external_url = schema.TextLine(
+        title=u"External Resource URL",
+        description=u"",
+        required=False,
+    )
