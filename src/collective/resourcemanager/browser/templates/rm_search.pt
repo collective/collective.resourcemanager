@@ -80,7 +80,7 @@
                 results += '<div class="rs-result">';
                 results += '<div class="rs-metadata">';
                 results += '<strong>title:</strong> <span class="rs-title">' + metadata[item].field8 + '</span><br />';
-                results += '<strong>id:</strong> ' + metadata[item].ref + '<br />';
+                results += '<strong>id:</strong>  <span class="rs-id">' + metadata[item].ref + '</span><br />';
                 results += '<strong>created:</strong> ' + metadata[item].creation_date + '<br />';
                 results += '<strong>ext:</strong> ' + metadata[item].file_extension + '<br />';
                 results += '<span class="imageaction ' + search_context + '" data-url=' + metadata[item].url + '>Use this image</span><br />';
@@ -130,6 +130,7 @@
                         data: {
                             image: $(this).attr('data-url'),
                             title: $(this).parents('.rs-result').find('.rs-title').text(),
+                            id: $(this).parents('.rs-result').find('.rs-id').text(),
                             type: 'json'
                         },
                         success: function(data) {
