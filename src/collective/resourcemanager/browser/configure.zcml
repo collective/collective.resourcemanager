@@ -37,6 +37,7 @@
     title="ResourceManager Image field"
     description="Replacement for Lead Image, browse external resources for an image to attach"
     provides=".behaviors.IBrowseRSBehavior"
+    marker=".behaviors.IBrowseRS"
     factory=".behaviors.BrowseRS"
     />
 
