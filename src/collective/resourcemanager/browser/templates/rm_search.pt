@@ -15,7 +15,7 @@
     <tal:sources repeat="resource view/resources">
         <h1 class="documentFirstHeading">${resource/__doc__}</h1>
         <form action="" method="POST"
-              tal:define="images resource/image_urls">
+              tal:define="images resource/image_metadata">
           <div class="fieldErrorBox"></div>
           <label for="rs_search">Search</label>:<br />
           <input id="rs_search" name="rs_search" type="text"
@@ -35,16 +35,16 @@
                     <div class="rs-result"
                          tal:repeat="image images">
                         <div class="rs-metadata"
-                             tal:define="item python:resource.image_metadata[image]">
+                             tal:define="item python:images[image]">
                              <strong>title:</strong> ${item/field8}<br />
                              <strong>id:</strong> ${item/ref}<br />
                              <strong>created:</strong> ${item/creation_date}<br />
                              <strong>ext:</strong> ${item/file_extension}<br />
-                             <span class="imageaction" data-url="${python:images[image]}">
+                             <span class="imageaction" data-url="${item/url}">
                                  Use this image
                              </span>
                         </div>
-                        <img src="${python:images[image]}" />
+                        <img src="${python:images[image]['url']}" />
                     </div>
                 </tal:imgs>
             </div>
@@ -66,17 +66,16 @@
             var imagedata = JSON.parse(data);
             var errors = imagedata['errors'];
             var metadata = imagedata['metadata'];
-            var urls = imagedata['urls'];
             var search_context = imagedata['search_context']
             var results = '<p class="showbrowser">&lt; Browse the Collections</p>';
             for (error in errors) {
                 err_str = errors[error].replace(/\&/g, '&amp;');
                 results += '<p style="color: red">' + err_str + '</p>'
             }
-            if (urls.length == 0) {
+            if (metadata.length == 0) {
                 results += '<p>No images found</p>';
             }
-            for (item in urls) {
+            for (item in metadata) {
                 results += '<div class="rs-result">';
                 results += '<div class="rs-metadata">';
                 results += '<strong>title:</strong> <span class="rs-title">' + metadata[item].field8 + '</span><br />';
@@ -86,7 +85,7 @@
                 results += '<span class="imageaction ' + search_context + '" data-url=' + metadata[item].url + '>Use this image</span><br />';
                 results += '<strong>in folder:</strong> ' + metadata[item].exists + '<br />';
                 results += '</div>';
-                results += '<img src=' + urls[item] + ' />';
+                results += '<img src=' + metadata[item].url + ' />';
                 results += '</div>';
             }
             $('.rsresults').html($('.rsresults').html() + results);
