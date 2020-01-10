@@ -108,6 +108,28 @@
                 }
             });
         }
+        function show_message(message) {
+            message_div = '<div class="rs-message">';
+            message_div += message;
+            message_div += '</div>';
+            $('body').prepend(message_div);
+            msg_timeout = setTimeout(function(){
+                $('.rs-message').fadeOut('slow', function(){
+                    $('.rs-message').remove();
+                });
+            }, 5000);
+            $('.rs-message').on('mouseover', function(){
+                clearTimeout(msg_timeout);
+                $('.rs-message').show();
+            });
+            $('.rs-message').on('mouseout', function(){
+                msg_timeout = setTimeout(function(){
+                    $('.rs-message').fadeOut('slow', function(){
+                        $('.rs-message').remove();
+                    });
+                }, 5000);
+            });
+        }
         (function($) { $(function() {
             $('#search-submit').click(function(e){
                 e.preventDefault();
@@ -118,9 +140,9 @@
                 do_ajax_search($(this).val());
             });
             $('.rsresults').on('click', '.imageaction', function(){
+                current_item = $(this);
+                $(current_item).addClass('loading');
                 if ($(this).parents('.plone-modal').length) {
-                    current_item = $(this);
-                    $(current_item).addClass('loading');
                     $.ajax({
                         headers: { Accept: "application/json"},
                         url: "copy-img-from-rs",
@@ -149,7 +171,8 @@
                             type: 'json'
                         },
                         success: function(data) {
-                            console.log(data)
+                            $(current_item).removeClass('loading');
+                            show_message(data);
                         }
                     });
                 }

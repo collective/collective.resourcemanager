@@ -25,6 +25,16 @@
     color: blue;
     padding: 0;
 }
+.rs-message {
+    position: fixed;
+    z-index: 100;
+    width: 50%;
+    margin: 20px 0 0 50px;
+    background-color: #edddc7;
+    padding: 5px 15px;
+    border-radius: 4px;
+    border: 1px solid #b5a287;
+}
 .imageaction,
 .showbrowser {
     cursor: pointer;
