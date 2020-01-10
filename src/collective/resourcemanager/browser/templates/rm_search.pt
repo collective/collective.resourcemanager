@@ -119,8 +119,23 @@
             });
             $('.rsresults').on('click', '.imageaction', function(){
                 if ($(this).parents('.plone-modal').length) {
-                    document.getElementById("rs-url-input").value = $(this).attr('data-url');
-                    $(this).trigger("destroy.plone-modal.patterns");
+                    current_item = $(this);
+                    $(current_item).addClass('loading');
+                    $.ajax({
+                        headers: { Accept: "application/json"},
+                        url: "copy-img-from-rs",
+                        type: "GET",
+                        data: {
+                            image: $(this).attr('data-url'),
+                            id: $(this).parents('.rs-result').find('.rs-id').text(),
+                            function: 'geturl',
+                            type: 'json'
+                        },
+                        success: function(data) {
+                            document.getElementById("rs-url-input").value = data;
+                            $(current_item).trigger("destroy.plone-modal.patterns");
+                        }
+                    });
                 } else {
                     $.ajax({
                         headers: { Accept: "application/json"},
@@ -130,6 +145,7 @@
                             image: $(this).attr('data-url'),
                             title: $(this).parents('.rs-result').find('.rs-title').text(),
                             id: $(this).parents('.rs-result').find('.rs-id').text(),
+                            function: 'copyimage',
                             type: 'json'
                         },
                         success: function(data) {

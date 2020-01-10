@@ -37,6 +37,18 @@ h2.loading::after {
     position: absolute;
     margin-left: 15px;
 }
+.imageaction.loading::after {
+    content: '';
+    animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+    position: absolute;
+    margin: 6px 0 0 10px;
+    width: 10px;
+    height: 10px;
+    border-top: 3px solid #333;
+    border-left: 3px solid #999;
+    border-bottom: 3px solid #ddd;
+    border-radius: 20px;
+}
 @keyframes lds-ring {
   0% {
     transform: rotate(0deg);
