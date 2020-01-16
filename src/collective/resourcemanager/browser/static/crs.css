@@ -67,6 +67,18 @@ h2.loading::after {
     transform: rotate(360deg);
   }
 }
+.rsresults .navigation {
+    overflow: auto;
+    padding: 7px 0;
+    margin-bottom: 25px;
+}
+.rsresults .pagination {
+    display: table-cell;
+}
+.rsresults .pagination li {
+    display: inline;
+    float: none;
+}
 .rsresults .pagination .active a {
     background-color: #007bb1;
     color: #ffffff;
