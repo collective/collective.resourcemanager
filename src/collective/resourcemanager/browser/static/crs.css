@@ -67,3 +67,7 @@ h2.loading::after {
     transform: rotate(360deg);
   }
 }
+.rsresults .pagination .active a {
+    background-color: #007bb1;
+    color: #ffffff;
+}

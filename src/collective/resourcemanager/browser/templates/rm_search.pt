@@ -76,10 +76,15 @@
                 results += '<p>No images found</p>';
             } else {
                 results += 'Results ' + imagedata.b_start + '-' + imagedata.b_end + ' out of ' + imagedata.num_results + '<br />';
+                results += '<nav class="navigation"><ul class="pagination">'
                 for (i = 1; i <= imagedata.num_batches; i++) {
-                    results += '<span class="batchnum">' + i + '</span>';
+                    if (i == imagedata.curr_batch) {
+                        results += '<li class="active"><a class="batchnum" href="#">' + i + '</a></li>';
+                    } else {
+                        results += '<li><a class="batchnum" href="#">' + i + '</a></li>';
+                    }
                 }
-                results += '<br />';
+                results += '</ul></nav>';
             }
             for (item in metadata) {
                 results += '<div class="rs-result">';
@@ -97,7 +102,8 @@
             $('.rsresults').html($('.rsresults').html() + results);
             $('.rsresults h2').removeClass('loading');
 
-            $('.batchnum').on('click', function(){
+            $('.batchnum').on('click', function(e){
+                e.preventDefault();
                 batchnum = $(this).text();
                 do_ajax_search($('#rs_search').val(), batchnum);
             });
