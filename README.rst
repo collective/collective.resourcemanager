@@ -34,6 +34,7 @@ Install collective.resourcemanager and any resourcemanager.* packages by adding 
 Run ``bin/buildout``, and start the instance.
 
 Within Plone:
+
 * Install the add-ons in the Add-ons Control Panel
 * For content types that will use the custom lead image behavior:
   * Go to the Dexterity Content Types Control Panel
