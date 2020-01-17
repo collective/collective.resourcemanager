@@ -111,7 +111,8 @@
         function do_ajax_search(searchterm, batch=1) {
             $('.rsresults').empty();
             $('#rscollections').hide();
-            $('.rsresults').html('<h2 class="loading">Results for ' + searchterm + '</h2>')
+            $('.rsresults').html('<h2 class="loading">Results for ' + searchterm + '</h2>');
+            $('#rs_search').val(searchterm);
             $.ajax({
                 headers: { Accept: "application/json"},
                 url: "<tal:context replace="resource/search_context" />",
@@ -155,7 +156,7 @@
             });
             $('.browse-submit').click(function(e){
                 e.preventDefault();
-                do_ajax_search($(this).val());
+                do_ajax_search('!' + $(this).val());
             });
             $('.rsresults').on('click', '.imageaction', function(){
                 current_item = $(this);
