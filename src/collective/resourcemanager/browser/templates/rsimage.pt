@@ -9,6 +9,9 @@
         class="pat-plone-modal" data-pat-plone-modal="image: true"
         tal:attributes="href large_image/url; data-modal-srcset large_image/srcset_attribute">
       <img tal:replace="structure python: scaled_image.tag(css_class='newsImage')" />
+      <figcaption tal:condition="context/image_caption|nothing"
+          tal:content="context/image_caption">
+      </figcaption>
     </a>
   </figure>
 

@@ -31,6 +31,12 @@ class IBrowseRSBehavior(model.Schema):
         'image',
         NamedRSImageWidget)
 
+    image_caption = schema.TextLine(
+        title=u'Image Caption',
+        description=u'',
+        required=False,
+    )
+
 
 @implementer(IBrowseRSBehavior)
 @adapter(IDexterityContent)
@@ -65,6 +71,14 @@ class BrowseRS(object):
                 self.context.image = blob
         else:
             self.context.image = value
+
+    @property
+    def image_caption(self):
+        return self.context.image_caption
+
+    @image_caption.setter
+    def image_caption(self, value):
+        self.context.image_caption = value
 
 
 @provider(IFormFieldProvider)
