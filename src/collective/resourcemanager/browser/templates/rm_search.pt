@@ -12,9 +12,10 @@
 
     <link rel="stylesheet" href="++resource++collective.resourcemanager/crs.css" />
 
-    <tal:resources repeat="resource view/resources">
+<div class="pat-autotoc autotabs" data-pat-autotoc="section:fieldset;levels:legend;">
+    <fieldset tal:repeat="resource view/resources">
+        <legend>${resource/__doc__}</legend>
     <div id="${resource/search_id}" class="resource-container">
-        <h1 class="documentFirstHeading">${resource/__doc__}</h1>
         <form action="" method="POST"
               tal:define="images resource/image_metadata">
           <div class="fieldErrorBox"></div>
@@ -206,7 +207,8 @@
         <hr />
         <br />
     </div>
-    </tal:resources>
+    </fieldset>
+</div>
 
       </metal:main>
     </metal:main>
