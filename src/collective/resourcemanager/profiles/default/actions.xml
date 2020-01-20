@@ -8,7 +8,7 @@
    <property name="url_expr">string:${object_url}/rm-search</property>
    <property name="link_target"></property>
    <property name="icon_expr"></property>
-   <property name="available_expr">python:object.isPrincipiaFolderish and 'Image' in [x.title for x in object.allowedContentTypes()]</property>
+   <property name="available_expr">python:'Image' in [x.title for x in object.allowedContentTypes()]</property>
    <property name="permissions">
     <element value="plone.app.contenttypes: Add Image"/>
    </property>
