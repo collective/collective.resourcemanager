@@ -97,8 +97,9 @@
                     results += '<strong>id:</strong>  <span class="rs-id">' + metadata[item].id + '</span><br />';
                     results += '<strong>created:</strong> ' + metadata[item].creation_date + '<br />';
                     results += '<strong>ext:</strong> ' + metadata[item].file_extension + '<br />';
-                    results += '<span class="imageaction ' + search_context + '" data-url=' + metadata[item].url + '>Use this image</span><br />';
+                    results += '<span class="imageaction ' + search_context + '" data-url=' + metadata[item].url + ' data-copy-url=' + imagedata.copy_url + '>Use this image</span><br />';
                     results += '<strong>in folder:</strong> ' + metadata[item].exists + '<br />';
+                    results += '<strong>more info:</strong> ' + metadata[item].additional_details + '<br />';
                     results += '</div>';
                     results += '<img src=' + metadata[item].url + ' />';
                     results += '</div>';
@@ -168,7 +169,7 @@
                     if ($(this).parents('.plone-modal').length) {
                         $.ajax({
                             headers: { Accept: "application/json"},
-                            url: "copy-img-from-rs",
+                            url: $(this).attr('data-copy-url'),
                             type: "GET",
                             data: {
                                 image: $(this).attr('data-url'),
@@ -184,7 +185,7 @@
                     } else {
                         $.ajax({
                             headers: { Accept: "application/json"},
-                            url: "copy-img-from-rs",
+                            url: $(this).attr('data-copy-url'),
                             type: "POST",
                             data: {
                                 image: $(this).attr('data-url'),

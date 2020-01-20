@@ -61,7 +61,7 @@ class BrowseRS(object):
                 Image.open(requests.get(url, stream=True).raw)
             except OSError as e:
                 raise ValidationError(
-                    '{}\n ResourceSpace url may be invalid'.format(e))
+                    '{}\n Resource url may be invalid'.format(e))
             blob = NamedBlobImage(
                 data=response.content)
             curr_img = self.context.image
