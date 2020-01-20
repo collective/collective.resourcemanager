@@ -3,6 +3,7 @@ from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
 from resourcemanager.resourcespace.search import ResourceSpaceSearch
+from resourcemanager.ap.search import APSearch
 
 
 def existing_copies(context):
@@ -20,7 +21,9 @@ class ResourceSearch(BrowserView):
         self.context = context
         self.request = request
         self.search_context = 'rm-search'
-        self.resources = [ResourceSpaceSearch(context, request)]
+        self.resources = [
+            ResourceSpaceSearch(context, request),
+            APSearch(context, request)]
 
     def __call__(self):
         self.search_context = self.request._steps[-1]

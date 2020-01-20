@@ -1,3 +1,6 @@
+.resource-container {
+    clear: both;
+}
 .rs-result {
     float: left;
     width: 46%;

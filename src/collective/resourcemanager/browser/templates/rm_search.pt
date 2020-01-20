@@ -12,16 +12,17 @@
 
     <link rel="stylesheet" href="++resource++collective.resourcemanager/crs.css" />
 
-    <tal:sources repeat="resource view/resources">
+    <tal:resources repeat="resource view/resources">
+    <div id="${resource/search_id}" class="resource-container">
         <h1 class="documentFirstHeading">${resource/__doc__}</h1>
         <form action="" method="POST"
               tal:define="images resource/image_metadata">
           <div class="fieldErrorBox"></div>
           <label for="rs_search">Search</label>:<br />
-          <input id="rs_search" name="rs_search" type="text"
+          <input id="rs_search" class="rs_search" name="rs_search" type="text"
                  style="display: inline-block; width: 50%">
           <span tal:replace="structure context/@@authenticator/authenticator"/>
-          <input class="standalone" value="Submit" type="submit" id="search-submit"
+          <input class="standalone search-submit" value="Submit" type="submit"
                  i18n:domain="plone" i18n:attributes="value"/>
           <hr />
 
@@ -48,7 +49,7 @@
                     </div>
                 </tal:imgs>
             </div>
-            <div id='rscollections'
+            <div class='rscollections'
                  tal:attributes="style python:images and 'display:none' or ''">
                 <h2>Browse Collections</h2>
                 <div class="rs-result"
@@ -61,148 +62,151 @@
             </div>
         </form>
 
-    <script type="text/javascript">
-        function populate_results(data) {
-            var imagedata = JSON.parse(data);
-            var errors = imagedata['errors'];
-            var metadata = imagedata['metadata'];
-            var search_context = imagedata['search_context']
-            var results = '<p class="showbrowser">&lt; Browse the Collections</p>';
-            for (error in errors) {
-                err_str = errors[error].replace(/\&/g, '&amp;');
-                results += '<p style="color: red">' + err_str + '</p>';
-            }
-            if (metadata.length == 0) {
-                results += '<p>No images found</p>';
-            } else {
-                results += 'Results ' + imagedata.b_start + '-' + imagedata.b_end + ' out of ' + imagedata.num_results + '<br />';
-                results += '<nav class="navigation"><ul class="pagination">'
-                for (i = 1; i <= imagedata.num_batches; i++) {
-                    if (i == imagedata.curr_batch) {
-                        results += '<li class="active"><a class="batchnum" href="#">' + i + '</a></li>';
-                    } else {
-                        results += '<li><a class="batchnum" href="#">' + i + '</a></li>';
+        <script type="text/javascript">
+            function populate_results(data, search_id) {
+                var imagedata = JSON.parse(data);
+                var errors = imagedata['errors'];
+                var metadata = imagedata['metadata'];
+                var search_context = imagedata['search_context']
+                var results = '<p class="showbrowser">&lt; Browse the Collections</p>';
+                for (error in errors) {
+                    err_str = errors[error].replace(/\&/g, '&amp;');
+                    results += '<p style="color: red">' + err_str + '</p>';
+                }
+                if (metadata.length == 0) {
+                    results += '<p>No images found</p>';
+                } else {
+                    results += 'Results ' + imagedata.b_start + '-' + imagedata.b_end + ' out of ' + imagedata.num_results + '<br />';
+                    results += '<nav class="navigation"><ul class="pagination">'
+                    for (i = 1; i <= imagedata.num_batches; i++) {
+                        if (i == imagedata.curr_batch) {
+                            results += '<li class="active"><a class="batchnum" href="#">' + i + '</a></li>';
+                        } else {
+                            results += '<li><a class="batchnum" href="#">' + i + '</a></li>';
+                        }
                     }
+                    results += '</ul></nav>';
                 }
-                results += '</ul></nav>';
-            }
-            for (item in metadata) {
-                results += '<div class="rs-result">';
-                results += '<div class="rs-metadata">';
-                results += '<strong>title:</strong> <span class="rs-title">' + metadata[item].field8 + '</span><br />';
-                results += '<strong>id:</strong>  <span class="rs-id">' + metadata[item].ref + '</span><br />';
-                results += '<strong>created:</strong> ' + metadata[item].creation_date + '<br />';
-                results += '<strong>ext:</strong> ' + metadata[item].file_extension + '<br />';
-                results += '<span class="imageaction ' + search_context + '" data-url=' + metadata[item].url + '>Use this image</span><br />';
-                results += '<strong>in folder:</strong> ' + metadata[item].exists + '<br />';
-                results += '</div>';
-                results += '<img src=' + metadata[item].url + ' />';
-                results += '</div>';
-            }
-            $('.rsresults').html($('.rsresults').html() + results);
-            $('.rsresults h2').removeClass('loading');
+                for (item in metadata) {
+                    results += '<div class="rs-result">';
+                    results += '<div class="rs-metadata">';
+                    results += '<strong>title:</strong> <span class="rs-title">' + metadata[item].title + '</span><br />';
+                    results += '<strong>id:</strong>  <span class="rs-id">' + metadata[item].id + '</span><br />';
+                    results += '<strong>created:</strong> ' + metadata[item].creation_date + '<br />';
+                    results += '<strong>ext:</strong> ' + metadata[item].file_extension + '<br />';
+                    results += '<span class="imageaction ' + search_context + '" data-url=' + metadata[item].url + '>Use this image</span><br />';
+                    results += '<strong>in folder:</strong> ' + metadata[item].exists + '<br />';
+                    results += '</div>';
+                    results += '<img src=' + metadata[item].url + ' />';
+                    results += '</div>';
+                }
+                $('#' + search_id + ' .rsresults').html($('#' + search_id + ' .rsresults').html() + results);
+                $('#' + search_id + ' .rsresults h2').removeClass('loading');
 
-            $('.batchnum').on('click', function(e){
-                e.preventDefault();
-                batchnum = $(this).text();
-                do_ajax_search($('#rs_search').val(), batchnum);
-            });
-        }
-        function do_ajax_search(searchterm, batch=1) {
-            $('.rsresults').empty();
-            $('#rscollections').hide();
-            $('.rsresults').html('<h2 class="loading">Results for ' + searchterm + '</h2>');
-            $('#rs_search').val(searchterm);
-            $.ajax({
-                headers: { Accept: "application/json"},
-                url: "<tal:context replace="resource/search_context" />",
-                type: "GET",
-                data: {
-                    rs_search: searchterm,
-                    type: 'json',
-                    batch: batch
-                },
-                success: function(data) {
-                    populate_results(data);
-                }
-            });
-        }
-        function show_message(message) {
-            message_div = '<div class="rs-message">';
-            message_div += message;
-            message_div += '</div>';
-            $('body').prepend(message_div);
-            msg_timeout = setTimeout(function(){
-                $('.rs-message').fadeOut('slow', function(){
-                    $('.rs-message').remove();
+                $('.batchnum').on('click', function(e){
+                    e.preventDefault();
+                    batchnum = $(this).text();
+                    do_ajax_search($('.rs_search').val(), search_id, batchnum);
                 });
-            }, 5000);
-            $('.rs-message').on('mouseover', function(){
-                clearTimeout(msg_timeout);
-                $('.rs-message').show();
-            });
-            $('.rs-message').on('mouseout', function(){
+            }
+            function do_ajax_search(searchterm, search_id, batch=1) {
+                $('#' + search_id + ' .rsresults').empty();
+                $('#' + search_id + ' .rscollections').hide();
+                $('#' + search_id + ' .rsresults').html('<h2 class="loading">Results for ' + searchterm + '</h2>');
+                $('#' + search_id + ' .rs_search').val(searchterm);
+                $.ajax({
+                    headers: { Accept: "application/json"},
+                    url: search_id,
+                    type: "GET",
+                    data: {
+                        rs_search: searchterm,
+                        type: 'json',
+                        batch: batch
+                    },
+                    success: function(data) {
+                        populate_results(data, search_id);
+                    }
+                });
+            }
+            function show_message(message) {
+                message_div = '<div class="rs-message">';
+                message_div += message;
+                message_div += '</div>';
+                $('body').prepend(message_div);
                 msg_timeout = setTimeout(function(){
                     $('.rs-message').fadeOut('slow', function(){
                         $('.rs-message').remove();
                     });
                 }, 5000);
-            });
-        }
-        (function($) { $(function() {
-            $('#search-submit').click(function(e){
-                e.preventDefault();
-                do_ajax_search($('#rs_search').val());
-            });
-            $('.browse-submit').click(function(e){
-                e.preventDefault();
-                do_ajax_search('!' + $(this).val());
-            });
-            $('.rsresults').on('click', '.imageaction', function(){
-                current_item = $(this);
-                $(current_item).addClass('loading');
-                if ($(this).parents('.plone-modal').length) {
-                    $.ajax({
-                        headers: { Accept: "application/json"},
-                        url: "copy-img-from-rs",
-                        type: "GET",
-                        data: {
-                            image: $(this).attr('data-url'),
-                            id: $(this).parents('.rs-result').find('.rs-id').text(),
-                            function: 'geturl',
-                            type: 'json'
-                        },
-                        success: function(data) {
-                            document.getElementById("rs-url-input").value = data;
-                            $(current_item).trigger("destroy.plone-modal.patterns");
-                        }
-                    });
-                } else {
-                    $.ajax({
-                        headers: { Accept: "application/json"},
-                        url: "copy-img-from-rs",
-                        type: "POST",
-                        data: {
-                            image: $(this).attr('data-url'),
-                            title: $(this).parents('.rs-result').find('.rs-title').text(),
-                            id: $(this).parents('.rs-result').find('.rs-id').text(),
-                            function: 'copyimage',
-                            type: 'json'
-                        },
-                        success: function(data) {
-                            $(current_item).removeClass('loading');
-                            show_message(data);
-                        }
-                    });
-                }
-            });
-            $('.rsresults').on('click', '.showbrowser', function(){
-                $('.rsresults').empty();
-                $('#rscollections').show();
-            });
-        }); })(jQuery);
-    </script>
-</tal:sources>
+                $('.rs-message').on('mouseover', function(){
+                    clearTimeout(msg_timeout);
+                    $('.rs-message').show();
+                });
+                $('.rs-message').on('mouseout', function(){
+                    msg_timeout = setTimeout(function(){
+                        $('.rs-message').fadeOut('slow', function(){
+                            $('.rs-message').remove();
+                        });
+                    }, 5000);
+                });
+            }
+            (function($) { $(function() {
+                $('#<tal:search replace="resource/search_id" /> .search-submit').click(function(e){
+                    e.preventDefault();
+                    do_ajax_search($(this).siblings('.rs_search').val(), '<tal:search replace="resource/search_id" />');
+                });
+                $('#<tal:search replace="resource/search_id" /> .browse-submit').click(function(e){
+                    e.preventDefault();
+                    do_ajax_search('!' + $(this).val(), '<tal:search replace="resource/search_id" />');
+                });
+                $('#<tal:search replace="resource/search_id" /> .rsresults').on('click', '.imageaction', function(){
+                    current_item = $(this);
+                    $(current_item).addClass('loading');
+                    if ($(this).parents('.plone-modal').length) {
+                        $.ajax({
+                            headers: { Accept: "application/json"},
+                            url: "copy-img-from-rs",
+                            type: "GET",
+                            data: {
+                                image: $(this).attr('data-url'),
+                                id: $(this).parents('.rs-result').find('.rs-id').text(),
+                                function: 'geturl',
+                                type: 'json'
+                            },
+                            success: function(data) {
+                                document.getElementById("rs-url-input").value = data;
+                                $(current_item).trigger("destroy.plone-modal.patterns");
+                            }
+                        });
+                    } else {
+                        $.ajax({
+                            headers: { Accept: "application/json"},
+                            url: "copy-img-from-rs",
+                            type: "POST",
+                            data: {
+                                image: $(this).attr('data-url'),
+                                title: $(this).parents('.rs-result').find('.rs-title').text(),
+                                id: $(this).parents('.rs-result').find('.rs-id').text(),
+                                function: 'copyimage',
+                                type: 'json'
+                            },
+                            success: function(data) {
+                                $(current_item).removeClass('loading');
+                                show_message(data);
+                            }
+                        });
+                    }
+                });
+                $('#<tal:search replace="resource/search_id" /> .rsresults').on('click', '.showbrowser', function(){
+                    $('#<tal:search replace="resource/search_id" /> .rsresults').empty();
+                    $('#<tal:search replace="resource/search_id" /> .rscollections').show();
+                });
+            }); })(jQuery);
+        </script>
+        <hr />
+        <br />
+    </div>
+    </tal:resources>
 
       </metal:main>
     </metal:main>
