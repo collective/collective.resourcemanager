@@ -15,7 +15,8 @@
 <div class="pat-autotoc autotabs" data-pat-autotoc="section:fieldset;levels:legend;">
     <fieldset tal:repeat="resource view/resources">
         <legend>${resource/__doc__}</legend>
-    <div id="${resource/search_id}" class="resource-container">
+    <div id="${resource/search_id}" class="resource-container"
+         tal:define="collections resource/collections">
         <form action="" method="POST"
               tal:define="images resource/image_metadata">
           <div class="fieldErrorBox"></div>
@@ -51,11 +52,11 @@
                 </tal:imgs>
             </div>
             <div class='rscollections'
+                 tal:condition="collections"
                  tal:attributes="style python:images and 'display:none' or ''">
                 <h2>Browse Collections</h2>
                 <div class="rs-result"
-                     tal:define="images resource/collections"
-                     tal:repeat="image images">
+                     tal:repeat="image collections">
                     <strong>title:</strong> <input name="rs_browse" class="browse-submit" value="${image/name}" type="submit"/><br />
                     <strong>created:</strong> ${image/created}<br />
                     <strong>keywords:</strong> ${image/keywords}<br />
@@ -68,8 +69,9 @@
                 var imagedata = JSON.parse(data);
                 var errors = imagedata['errors'];
                 var metadata = imagedata['metadata'];
-                var search_context = imagedata['search_context']
-                var results = '<p class="showbrowser">&lt; Browse the Collections</p>';
+                var search_context = imagedata['search_context'];
+                var results = '';
+                results += '<p class="showbrowser">&lt; Browse the Collections</p>';
                 for (error in errors) {
                     err_str = errors[error].replace(/\&/g, '&amp;');
                     results += '<p style="color: red">' + err_str + '</p>';
