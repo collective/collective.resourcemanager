@@ -2,8 +2,7 @@ from plone import api
 from Products.Five.browser import BrowserView
 from Products.Five.browser.pagetemplatefile import ViewPageTemplateFile
 
-from resourcemanager.resourcespace.search import ResourceSpaceSearch
-from resourcemanager.ap.search import APSearch
+from ..interfaces import ICollectiveResourcemanagerLayer
 
 
 def existing_copies(context):
@@ -21,9 +20,12 @@ class ResourceSearch(BrowserView):
         self.context = context
         self.request = request
         self.search_context = 'rm-search'
-        self.resources = [
-            ResourceSpaceSearch(context, request),
-            APSearch(context, request)]
+        self.resources = []
+        for item in ICollectiveResourcemanagerLayer.dependents.keys():
+            inherited = getattr(item, 'inherit', None)
+            if not inherited:
+                continue
+            self.resources.append(inherited(context, request))
 
     def __call__(self):
         self.search_context = self.request._steps[-1]
