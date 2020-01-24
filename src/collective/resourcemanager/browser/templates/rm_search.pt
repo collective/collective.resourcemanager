@@ -69,6 +69,7 @@
                 var imagedata = JSON.parse(data);
                 var errors = imagedata['errors'];
                 var metadata = imagedata['metadata'];
+                var extras = imagedata['extras'];
                 var search_context = imagedata['search_context'];
                 var results = '';
                 results += '<p class="showbrowser">&lt; Browse the Collections</p>';
@@ -104,6 +105,9 @@
                     results += '<img src=' + metadata[item].url + ' />';
                     results += '</div>';
                 }
+                for (item in extras) {
+                    results += '<input type="hidden" name=' + item + ' value=' + extras[item] + ' />'
+                }
                 $('#' + search_id + ' .rsresults').html($('#' + search_id + ' .rsresults').html() + results);
                 $('#' + search_id + ' .rsresults h2').removeClass('loading');
 
@@ -114,6 +118,10 @@
                 });
             }
             function do_ajax_search(searchterm, search_id, batch=1) {
+                extras = {}
+                $('#' + search_id + ' input[type="hidden"]').each(function(){
+                    extras[$(this).attr('name')] = $(this).attr('value');
+                });
                 $('#' + search_id + ' .rsresults').empty();
                 $('#' + search_id + ' .rscollections').hide();
                 $('#' + search_id + ' .rsresults').html('<h2 class="loading">Results for ' + searchterm + '</h2>');
@@ -125,7 +133,8 @@
                     data: {
                         rs_search: searchterm,
                         type: 'json',
-                        batch: batch
+                        batch: batch,
+                        extras: JSON.stringify(extras),
                     },
                     success: function(data) {
                         populate_results(data, search_id);
