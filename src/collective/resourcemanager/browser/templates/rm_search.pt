@@ -110,7 +110,7 @@
                 $('.batchnum').on('click', function(e){
                     e.preventDefault();
                     batchnum = $(this).text();
-                    do_ajax_search($('.rs_search').val(), search_id, batchnum);
+                    do_ajax_search($(this).parents('form').find('.rs_search').val(), search_id, batchnum);
                 });
             }
             function do_ajax_search(searchterm, search_id, batch=1) {
