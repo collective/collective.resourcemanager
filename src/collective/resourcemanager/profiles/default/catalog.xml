@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <object name="portal_catalog">
-  <column value="external_url"/>
-  <index name="external_url" meta_type="FieldIndex">
-    <indexed_attr value="external_url"/>
+  <column value="external_img_id"/>
+  <index name="external_img_id" meta_type="FieldIndex">
+    <indexed_attr value="external_img_id"/>
    </index>
 </object>

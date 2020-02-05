@@ -84,8 +84,8 @@ class BrowseRS(object):
 @provider(IFormFieldProvider)
 class IImageResourceData(model.Schema):
 
-    external_url = schema.TextLine(
-        title=u"External Resource URL",
+    external_img_id = schema.TextLine(
+        title=u"External Resource ID",
         description=u"",
         required=False,
     )

@@ -7,7 +7,7 @@ from ..interfaces import ICollectiveResourcemanagerLayer
 
 def existing_copies(context):
     images = api.content.find(context=context, portal_type='Image')
-    return [x.external_url for x in images if x.external_url]
+    return [x.external_img_id for x in images if getattr(x, 'external_img_id', False)]
 
 
 class ResourceSearch(BrowserView):
