@@ -88,4 +88,5 @@ class IImageResourceData(model.Schema):
         title=u"External Resource ID",
         description=u"",
         required=False,
+        readonly=True,
     )
