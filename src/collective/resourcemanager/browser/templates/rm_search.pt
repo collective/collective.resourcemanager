@@ -57,7 +57,7 @@
                 <h2>Browse Collections</h2>
                 <div class="rs-result"
                      tal:repeat="image collections">
-                    <strong>title:</strong> <input name="rs_browse" class="browse-submit" value="${image/name}" type="submit"/><br />
+                    <strong>title:</strong> <input name="rs_browse" class="browse-submit" value="${image/name}" data-id="${image/ref}" type="submit"/><br />
                     <strong>created:</strong> ${image/created}<br />
                     <strong>keywords:</strong> ${image/keywords}<br />
                 </div>
@@ -170,7 +170,7 @@
                 });
                 $('#<tal:search replace="resource/search_id" /> .browse-submit').click(function(e){
                     e.preventDefault();
-                    do_ajax_search('!' + $(this).val(), '<tal:search replace="resource/search_id" />');
+                    do_ajax_search('!collection' + $(this).attr('data-id'), '<tal:search replace="resource/search_id" />');
                 });
                 $('#<tal:search replace="resource/search_id" /> .rsresults').on('click', '.imageaction', function(){
                     current_item = $(this);
