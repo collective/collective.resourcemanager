@@ -90,3 +90,8 @@ class IImageResourceData(model.Schema):
         required=False,
         readonly=True,
     )
+    resource_metadata = schema.Text(
+        title=u"Resource Metadata",
+        description=u"Additional information from the external resource",
+        required=False,
+    )
