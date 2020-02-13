@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
+from plone.dexterity.browser import add
+from plone.dexterity.browser.edit import DefaultEditForm
 from plone.formwidget.namedfile.interfaces import INamedFileWidget
 from plone.formwidget.namedfile.widget import NamedImageWidget
-# from z3c.form.interfaces import IFieldWidget
-# from z3c.form.widget import FieldWidget
 from zope import schema
 from zope.interface import implementer
 
@@ -20,3 +20,25 @@ class INamedRSImageWidget(INamedFileWidget):
 @implementer(INamedRSImageWidget)
 class NamedRSImageWidget(NamedImageWidget):
     klass = u'named-rsimage-widget'
+
+
+class ImageAddForm(add.DefaultAddForm):
+
+    def updateWidgets(self, prefix=None):
+        super(ImageAddForm, self).updateWidgets()
+        image = self.widgets['image']
+        image.__class__ = NamedRSImageWidget
+        self.widgets.update()
+
+
+class ImageAddView(add.DefaultAddView):
+    form = ImageAddForm
+
+
+class ImageEdit(DefaultEditForm):
+
+    def updateWidgets(self, prefix=None):
+        super(ImageEdit, self).updateWidgets()
+        image = self.widgets['image']
+        image.__class__ = NamedRSImageWidget
+        self.widgets.update()
