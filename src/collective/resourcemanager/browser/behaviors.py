@@ -24,7 +24,7 @@ class IBrowseRSBehavior(model.Schema):
 
     image = namedfile.NamedBlobImage(
         title=u"Image",
-        description=u"Upload image or browse ResourceSpace",
+        description=u"Upload image or browse resources",
         required=False,
     )
     directives.widget(
