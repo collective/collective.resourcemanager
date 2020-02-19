@@ -48,6 +48,18 @@
           />
   </class>
 
+  <subscriber
+    for="plone.app.contenttypes.interfaces.IImage
+         zope.lifecycleevent.interfaces.IObjectAddedEvent"
+    handler=".widget.handle_resource_image"
+    />
+
+  <subscriber
+    for="plone.app.contenttypes.interfaces.IImage
+         zope.lifecycleevent.interfaces.IObjectModifiedEvent"
+    handler=".widget.handle_resource_image"
+    />
+
  <browser:page
     name="edit"
     for="plone.app.contenttypes.interfaces.IImage"
@@ -84,5 +96,7 @@
     layer="z3c.form.interfaces.IFormLayer"
     template="templates/rs_image_input.pt"
     />
+
+  <adapter factory=".widget.CustomImageValidator" />
 
 </configure>
