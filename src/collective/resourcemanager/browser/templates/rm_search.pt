@@ -187,7 +187,11 @@
                                 type: 'json'
                             },
                             success: function(data) {
-                                document.getElementById("rs-url-input").value = data;
+                                var imagedata = JSON.parse(data);
+                                document.getElementById("rs-url-input").value = imagedata['img_url'];
+                                if ($('#form-widgets-IImageResourceData-external_img_id').length) {
+                                    document.getElementById("form-widgets-IImageResourceData-external_img_id").value = imagedata['img_id'];
+                                }
                                 $(current_item).trigger("destroy.plone-modal.patterns");
                             }
                         });
