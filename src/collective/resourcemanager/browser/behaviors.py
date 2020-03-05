@@ -50,11 +50,15 @@ class BrowseRS(object):
 
     @image.setter
     def image(self, value):
-        req = self.context.REQUEST
-        url = 'rs-url-input' in req and req['rs-url-input']
-        blob = set_url_as_image(url, self.context.image, value)
-        self.context.image = blob
-        self.context.reindexObject()
+        if value:
+            self.context.image = value
+        else:
+            req = self.context.REQUEST
+            url = 'rs-url-input' in req and req['rs-url-input']
+            if not url:
+                return
+            blob = set_url_as_image(url, self.context.image, value)
+            self.context.image = blob
 
     @property
     def image_caption(self):

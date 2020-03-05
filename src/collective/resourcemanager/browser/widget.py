@@ -55,7 +55,7 @@ class CustomImageValidator(validator.SimpleFieldValidator):
     """
 
     def validate(self, value, force=False):
-        if 'NamedRSImageWidget' not in str(self.widget.__class__):
+        if value or 'NamedRSImageWidget' not in str(self.widget.__class__):
             # run original validation for default widget
             action = self.request.get("%s.action" % self.widget.name, None)
             if action == 'replace' and value is None:
@@ -66,7 +66,7 @@ class CustomImageValidator(validator.SimpleFieldValidator):
         if not self.widget.required:
             return
         resource_url = self.request.get('rs-url-input')
-        if not resource_url:
+        if not resource_url and not value:
             # raise Invalid("Missing Input")
             raise InvalidState()
 
