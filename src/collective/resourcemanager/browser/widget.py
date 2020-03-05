@@ -86,5 +86,4 @@ def handle_resource_image(obj, event):
         return
     blob = set_url_as_image(resource_url, obj.image, None)
     obj.image = blob
-    # TODO: apply resource_metadata, title, description
     obj.reindexObject()
