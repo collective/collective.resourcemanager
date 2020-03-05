@@ -82,6 +82,8 @@ def handle_resource_image(obj, event):
        copy it into the field, and set resource data
     """
     resource_url = obj.REQUEST.get('rs-url-input')
+    if not resource_url:
+        return
     blob = set_url_as_image(resource_url, obj.image, None)
     obj.image = blob
     # TODO: apply resource_metadata, title, description
