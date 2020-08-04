@@ -56,7 +56,7 @@ class BrowseRS(object):
             req = self.context.REQUEST
             url = 'rs-url-input' in req and req['rs-url-input']
             if not url:
-                return
+                self.context.image = value
             blob = set_url_as_image(url, self.context.image, value)
             self.context.image = blob
 
