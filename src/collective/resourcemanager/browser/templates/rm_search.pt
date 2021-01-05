@@ -95,11 +95,10 @@
                     results += '<div class="rs-result">';
                     results += '<div class="rs-metadata">';
                     results += '<strong>title:</strong> <span class="rs-title">' + metadata[item].title + '</span><br />';
+                    results += '<strong>description:</strong> ' + metadata[item].description + '<br />';
                     results += '<strong>id:</strong>  <span class="rs-id">' + metadata[item].id + '</span><br />';
                     results += '<strong>created:</strong> ' + metadata[item].creation_date + '<br />';
-                    results += '<strong>ext:</strong> ' + metadata[item].file_extension + '<br />';
                     results += '<span class="imageaction ' + search_context + '" data-url=' + metadata[item].url + ' data-copy-url=' + imagedata.copy_url + '>Use this image</span><br />';
-                    results += '<strong>in folder:</strong> ' + metadata[item].exists + '<br />';
                     results += '<strong>more info:</strong> ' + metadata[item].additional_details + '<br />';
                     results += '</div>';
                     results += '<img src=' + metadata[item].url + ' />';
